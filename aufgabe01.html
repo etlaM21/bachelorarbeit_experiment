@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Aufgabe</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background-color: beige;
+      }
+      .zeile {
+        margin-right: 4vmax;
+        margin-left: 4vmax;
+        display: inline;
+        background-color: grey;
+      }
+      .symbol {
+        width: 10vmax;
+        display: inline-block;
+        margin-right: 1vmax;
+        margin-left: 1vmax;
+        background-color: skyblue;
+        margin-bottom: 2vmax;
+      }
+      @media only screen and (min-width: 1000px){
+        .symbol {
+          width: 5vmax;
+          margin-right: 0.5vmax;
+          margin-left: 0.5vmax;
+          margin-bottom: 1vmax;
+        }
+        .zeile {
+          margin-right: 2vmax;
+          margin-left: 2vmax;
+       }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="testDiv">
+
+    </div>
+    <script src="aufgabe.js"></script>
+    <script>
+      window.onload = function () {
+          start();
+      }
+    </script>
+  </body>
+</html>

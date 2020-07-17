@@ -1,0 +1,49 @@
+<script>
+let loadingTimes = [];
+
+function generateLoadingTimes(n){
+    loadingTimes = [];
+    let averageGoal = 8;
+    // Erst random zwischen 6 und 10
+    loadingTimes.push(parseFloat(((Math.random() * Math.floor(4))+6).toFixed(2)));
+    for(let i = 1; loadingTimes.length < n; i++){
+        if(i+1 != n) {
+            if(loadingTimes[i-1] <= parseFloat(averageGoal)){
+                let rand = (Math.random() * Math.floor(2)) + 8;
+                loadingTimes.push(parseFloat(rand.toFixed(2)));
+            }
+            if(loadingTimes[i-1] > parseFloat(averageGoal)){
+                let rand = (Math.random() * Math.floor(2)) + 6;
+                loadingTimes.push(parseFloat(rand.toFixed(2)));
+            }
+        }
+        else {
+            let finalLoad = averageGoal * n;
+            for(let o = 0; o < loadingTimes.length; o++){
+                finalLoad = finalLoad - loadingTimes[o];
+            }
+            loadingTimes.push(finalLoad);
+        }
+    }
+}
+
+function logLoadingTimes(){
+    for(let i = 0; i < loadingTimes.length; i++){
+        console.log("LoadingTimes[" + i + "] = " + loadingTimes[i]);
+    }
+}
+
+function calcAverage(){
+    let sum = 0;
+    let divider = loadingTimes.length;
+    for(let i = 0; i < loadingTimes.length; i++){
+        sum = sum + loadingTimes[i];
+    }
+    let result = sum / divider;
+    console.log("Average = " + sum / divider);
+}
+
+generateLoadingTimes(5);
+logLoadingTimes();
+calcAverage();
+</script>

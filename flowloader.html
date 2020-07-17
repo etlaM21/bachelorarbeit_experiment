@@ -1,0 +1,128 @@
+<style>
+    #flowloader {
+        padding: 40px;
+        background-color: white;
+        width:60%;
+        min-width: 960px;
+        margin: 0 auto
+    }
+    #flowscore p {
+        display: inline-block;
+    }
+    #flowtarget {
+        width:45%;
+        margin-right:5%;
+        display: inline-block;
+    }
+    #flowtarget img {
+        width: 100%;
+        background-color: red;
+        opacity: 1;
+        transition: all 300ms linear;
+    }
+    #flowoptions {
+        width:45%;
+        display: inline-block;
+    }
+    #flowoptions img {
+        width: calc(33% - 10px);
+        display: block;
+        background-color: red;
+        margin-bottom: 10px;
+        cursor: pointer;
+        opacity: 1;
+        transition: all 200ms linear;
+    }
+</style>
+
+<body style="background-color: skyblue;">
+    <div id="flowloader">
+        <p>Im Hintergrund lädt die nächste Seite. Währenddessen kannst du dieses Minispiel spielen.</p>
+        <div id="flowscore">
+            <p>Dein Score: </p> <p>0</p>
+        </div>
+        <div id="flowtarget">
+
+        </div>
+        <div id="flowoptions">
+
+        </div>
+        <div id="flowtutorial">
+        <p>Welches Symbol auf der rechten Seite passt zu dem großen auf der linken Seite?</p>
+        </div>
+    </div>
+<script src="aufgabe.js"></script>
+<script>
+    let targetSymbol;
+    let optionSymbols = [];
+    let score = 0;
+
+    function generateGame(){
+        targetSymbol = Math.floor(Math.random() * Math.floor(symbolCount));
+        optionSymbols = [];
+        optionSymbols.push(targetSymbol);
+        let secondOption = Math.floor(Math.random() * Math.floor(symbolCount));
+        while(secondOption == targetSymbol) {
+            secondOption = Math.floor(Math.random() * Math.floor(symbolCount));
+        }
+        optionSymbols.push(secondOption);
+        let thirdOption = Math.floor(Math.random() * Math.floor(symbolCount));
+        while(thirdOption == targetSymbol || thirdOption == secondOption) {
+            thirdOption = Math.floor(Math.random() * Math.floor(symbolCount));
+        }
+        optionSymbols.push(thirdOption);
+    }
+
+    function generateHTML(){
+        document.getElementById("flowscore").getElementsByTagName("p")[1].innerHTML = score;
+
+        document.getElementById("flowtarget").innerHTML = "<img src='" + symbolSRC[targetSymbol] + "'>"
+        
+        // Generate Random Order
+        let order = [];
+        let first = Math.floor(Math.random() * Math.floor(3));
+        order.push(first);
+        let second = Math.floor(Math.random() * Math.floor(3));
+        while(second == first) {
+            second = Math.floor(Math.random() * Math.floor(3));
+        }
+        order.push(second);
+        let third = Math.floor(Math.random() * Math.floor(3));
+        while(third == first || third == second) {
+            third = Math.floor(Math.random() * Math.floor(3));
+        }
+        order.push(third);
+        let optionHTML = "";
+        for (let i = 0; i < optionSymbols.length; i++){
+            optionHTML += "<img onclick='optionSelect(" + optionSymbols[order[i]] + ", " + i + ")' src='" + symbolSRC[optionSymbols[order[i]]] + "'>"
+        }
+        document.getElementById("flowoptions").innerHTML = optionHTML;
+    }
+
+    function optionSelect(index, order){
+        if(index == targetSymbol){
+            score++;
+            document.getElementById("flowgamescore").value = score.toString();
+        }
+        let optionImages = document.getElementById("flowoptions").getElementsByTagName("img");
+        for(let i = 0; i < optionImages.length; i++) {
+            if(i != order){
+                optionImages[i].style.opacity = "0";
+                optionImages[i].addEventListener("transitionend", function(){
+                    document.getElementById("flowtarget").getElementsByTagName("img")[0].style.opacity = "0";
+                    document.getElementById("flowtarget").addEventListener("transitionend", function(){
+                        optionImages[order].style.opacity = "0";
+                        optionImages[order].addEventListener("transitionend", function(){
+                            generateGame();
+                           generateHTML();
+                        }, (true))
+                    }, (true))
+                }, (true)); 
+            }
+        }
+    }
+
+    generateGame();
+    generateHTML();
+</script>
+</body>
